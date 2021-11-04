@@ -5,26 +5,28 @@ const cors = require('cors');
 const app = express();
 
 let corsOption = {
-    origin: "localhost:3000"
+    origin: "localhost:8081"
 };
 
 app.use(cors(corsOption));
-app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 
 const db = require("./app/models");
-db.sequelize.sync({force: true}).then(() => {
-        console.log("Drop, roll and re-sync db.");
-    });
-    
 
+db.sequelize.sync();
+
+// db.sequelize.sync({force: true}).then(() => {
+//         console.log("Drop, roll and re-sync db.");
+//     });
+    
 app.get("/", (req, res) => {
-    res.json({message: "Welcome to Ahmad's aplplication!"});
+    res.json({message: "Welcome to Ahmad's application!"});
 });
 
 require("./app/routes/turorial.routes")(app);
 
-const PORT = process.env.PORT || 2000;
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
     console.log(`Server is currently active on port ${PORT}`);
 });
